@@ -77,6 +77,11 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+-- vim.keymap.set("n", "<leader>oi", ":VtsExec organize_imports<CR>", { buffer = 0 })
+vim.keymap.set("n", "<leader>u", ":VtsExec remove_unused_imports<CR>", { desc = "[R]emove [U]nsed imports" })
+vim.keymap.set("n", "<leader>m", ":VtsExec add_missing_imports<CR>", { desc = "Add [M]issing imports" })
+-- vim.keymap.set("n", "<leader>rf", ":VtsExec rename_file<CR>", { buffer = 0 })
+--vim.keymap.set("n", "<leader>tgr", ":VtsExec file_references<CR>", { buffer = 0 })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which

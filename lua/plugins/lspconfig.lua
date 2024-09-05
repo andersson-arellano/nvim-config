@@ -28,6 +28,7 @@ return {
 		-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
 		-- used for completion, annotations and signatures of Neovim apis
 		{ "folke/neodev.nvim", opts = {} },
+		"yioneko/nvim-vtsls",
 	},
 	config = function()
 		-- Brief aside: **What is LSP?**
@@ -212,6 +213,9 @@ return {
 		--
 		--  You can press `g?` for help in this menu.
 		require("mason").setup()
+
+		require("lspconfig.configs").vtsls = require("vtsls").lspconfig
+		require("lspconfig").vtsls.setup({})
 
 		-- You can add other tools here that you want Mason to install
 		-- for you, so that they are available from within Neovim.
