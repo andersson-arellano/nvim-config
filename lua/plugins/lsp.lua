@@ -26,6 +26,22 @@ return {
       local lspConf = require("lspconfig")
       local capabilities = require("blink.cmp").get_lsp_capabilities();
       lspConf.lua_ls.setup({ capabilities = capabilities })
+      -- local mason_register = require("mason_register")
+      -- local vue_lenguage_server = mason_register.get_package("vue-lenguage-server"): get_install_path()
+      --   .. "/node_modules/@vue/language-server"
+      --   lspConf.ts_ls.setup({
+      --     capabilities = capabilities,
+      --     init_options = {
+      --       plugins = {
+      --         {
+      --         name = "@vue/typescript-plugin",
+      --         location = vue_language_server,
+      --         languages = { "vue" },              }
+      --       }
+      --     },
+      --     filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" }
+      --   })
+ 
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
@@ -93,9 +109,29 @@ return {
           end,
         },
       }
+
+      -- local vue_language_server_path = vim.fn.stdpath("data") .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+      --
+      -- local vue_plugin = {
+      --   name = "@vue/typescript-plugin",
+      --   location = vue_language_server_path,
+      --   languages = { "vue" },
+      --   configNamespace = "typescript",
+      -- }
+      --
+      -- local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+
       local servers = {
         gopls = {},
-        ts_ls = {},
+        ts_ls = {
+        --   init_options = {
+        --     plugins = {
+        --       vue_plugin,
+        --     },
+        --   },
+        --   filetypes = tsserver_filetypes,
+        }
+        ,
 
         lua_ls = {
           settings = {
@@ -108,6 +144,30 @@ return {
             },
           },
         },
+        --
+        -- vue_ls = {}
+
+        -- dartls = {
+        --   cmd = { "dart", "language-server", "--protocol=lsp" },
+        --   filetypes = { "dart" },
+        --   init_options = {
+        --     closingLabels = true,
+        --     flutterOutline = true,
+        --     onlyAnalyzeProjectsWithOpenFiles = true,
+        --     outline = true,
+        --     suggestFromUnimportedLibraries = true,
+        --   },
+        --   -- root_dir = root_pattern("pubspec.yaml"),
+        --   settings = {
+        --     dart = {
+        --       completeFunctionCalls = true,
+        --       showTodos = true,
+        --     },
+        --   },
+        -- on_attach = function(client, bufnr)	
+        -- end,
+        -- }
+        
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
@@ -127,6 +187,30 @@ return {
           end,
         },
       }
+
+    local vue_language_server_path = vim.fn.stdpath("data") .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+    local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+
+    local vue_plugin = {
+        name = "@vue/typescript-plugin",
+        location = vue_language_server_path,
+        languages = { "vue" },
+        configNamespace = "typescript",
+    }
+    local ts_ls_config = {
+      init_options = {
+        plugins = {
+          vue_plugin,
+        },
+      },
+      filetypes = tsserver_filetypes,
+    }
+    local vue_ls_config = {}
+
+    -- nvim 0.11 or above
+    vim.lsp.config('vue_ls', vue_ls_config)
+    vim.lsp.config('ts_ls', ts_ls_config)
+    vim.lsp.enable({'ts_ls', 'vue_ls'})
     end
   },
 }
